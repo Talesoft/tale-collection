@@ -196,7 +196,6 @@ class CollectionTest extends TestCase
                 return strtoupper($key);
             })
             ->flip();
-
         var_dump($values->toArray());
     }
 }
