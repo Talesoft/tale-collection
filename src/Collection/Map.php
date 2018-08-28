@@ -12,12 +12,12 @@ class Map extends AbstractCollection implements MapInterface
     /**
      * @var array
      */
-    private $keys;
+    private $keys = [];
 
     /**
      * @var array
      */
-    private $values;
+    private $values = [];
 
     public function __construct(iterable $entries = [])
     {
@@ -44,14 +44,7 @@ class Map extends AbstractCollection implements MapInterface
         return new Collection($this->getIterable());
     }
 
-    protected function getIterable(): iterable
-    {
-        foreach ($this->keys as $i => $key) {
-            yield [$key, $this->values[$i]];
-        }
-    }
-
-    public function has($key): bool
+    public function has($key)
     {
         return $this->offsetExists($key);
     }
@@ -61,7 +54,12 @@ class Map extends AbstractCollection implements MapInterface
         $this->offsetSet($key, $value);
     }
 
-    public function remove($key): void
+    public function get($key)
+    {
+        return $this->offsetGet($key);
+    }
+
+    public function remove($key)
     {
         $this->offsetUnset($key);
     }
@@ -74,8 +72,8 @@ class Map extends AbstractCollection implements MapInterface
     public function offsetGet($offset)
     {
         $index = \array_search($offset, $this->keys, true);
-        if ($index === -1) {
-            throw new \OutOfBoundsException('The offset doesn\'t exist in this map');
+        if ($index === false) {
+            throw new \OutOfBoundsException('The key doesn\'t exist in this map');
         }
         return $this->values[$index];
     }
@@ -83,10 +81,9 @@ class Map extends AbstractCollection implements MapInterface
     public function offsetSet($offset, $value): void
     {
         $index = \array_search($offset, $this->keys, true);
-        if ($index === -1) {
+        if ($index === false) {
             $index = \count($this->keys);
             $this->keys[$index] = $offset;
-            return;
         }
         $this->values[$index] = $value;
     }
@@ -94,7 +91,7 @@ class Map extends AbstractCollection implements MapInterface
     public function offsetUnset($offset): void
     {
         $index = \array_search($offset, $this->keys, true);
-        if ($index === -1) {
+        if ($index === false) {
             return;
         }
         array_splice($this->keys, $index, 1);
@@ -106,10 +103,10 @@ class Map extends AbstractCollection implements MapInterface
         return \count($this->keys);
     }
 
-    public function sort(callable $comparator): void
+    public function sort(callable $comparator = null): void
     {
         $sortedValues = $this->values;
-        asort($sortedValues);
+        uasort($sortedValues, $comparator ?? 'strcmp');
         $sortedKeys = [];
         foreach ($sortedValues as $i => $value) {
             $sortedKeys[] = $this->keys[$i];
@@ -118,9 +115,16 @@ class Map extends AbstractCollection implements MapInterface
         $this->values = array_values($sortedValues);
     }
 
-    public function join(string $delimiter = ','): string
+    public function join(string $delimiter = ',', string $keyDelimiter = null): string
     {
-        return implode($delimiter, $this->values);
+        $entries = iterator_to_array($this->getIterator());
+        $values = [];
+        foreach ($entries as [$key, $value]) {
+            $values[] = $keyDelimiter !== null
+                ? "{$key}{$keyDelimiter}{$value}"
+                : $value;
+        }
+        return implode($delimiter, $values);
     }
 
     public function serialize(): string
@@ -136,5 +140,12 @@ class Map extends AbstractCollection implements MapInterface
     public function jsonSerialize()
     {
         return iterator_to_array($this->getEntries());
+    }
+
+    protected function getIterable(): iterable
+    {
+        foreach ($this->keys as $i => $key) {
+            yield [$key, $this->values[$i]];
+        }
     }
 }

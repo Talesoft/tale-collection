@@ -6,8 +6,6 @@ namespace Tale;
 use ArrayAccess;
 use Countable;
 use IteratorAggregate;
-use Tale\Collection\MapInterface;
-use Tale\Collection\SetInterface;
 
 interface CollectionInterface extends IteratorAggregate, ArrayAccess, Countable, \Serializable, \JsonSerializable
 {
@@ -18,14 +16,11 @@ interface CollectionInterface extends IteratorAggregate, ArrayAccess, Countable,
     public function forEach(callable $handler): void;
     public function map(callable $mapper): CollectionInterface;
     public function filter(callable $filter): CollectionInterface;
-    public function reduce(callable $reducer);
-    public function sort(callable $comparator): void;
+    public function reduce(callable $reducer, $initialValue = null);
+    public function sort(callable $comparator = null): void;
     public function flip(): CollectionInterface;
-    public function join(string $delimiter = ','): string;
+    public function join(string $delimiter = ',', string $keyDelimiter = null): string;
     public function chain(string $iteratorClassName, ...$args): CollectionInterface;
     public function toArray(): array;
-    public function toCollection(): CollectionInterface;
-    public function toMap(): MapInterface;
-    public function toSet(): SetInterface;
     public function __toString(): string;
 }

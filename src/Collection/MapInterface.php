@@ -7,8 +7,8 @@ use Tale\CollectionInterface;
 
 interface MapInterface extends CollectionInterface
 {
-    public function has($key): bool;
+    public function has($key);
     public function set($key, $value): void;
     public function get($key);
-    public function remove($key): void;
+    public function remove($key);
 }

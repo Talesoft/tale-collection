@@ -23,10 +23,16 @@ class MapTest extends TestCase
         $key2 = new class {};
 
         $map = new Map();
+        self::assertFalse($map->has($key1));
+        self::assertFalse($map->has($key2));
+
         $map->set($key1, 'value 1');
         $map->set($key2, 'value 2');
 
         self::assertTrue($map->has($key1));
+        self::assertTrue($map->has($key2));
+
         self::assertSame('value 1', $map->get($key1));
+        self::assertSame('value 2', $map->get($key2));
     }
 }

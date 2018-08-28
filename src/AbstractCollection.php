@@ -4,8 +4,6 @@ declare(strict_types=1);
 namespace Tale;
 
 use Tale\Collection\Iterator\EntryIterator;
-use Tale\Collection\MapInterface;
-use Tale\Collection\SetInterface;
 use Tale\Iterator\CallbackFilterIterator;
 use Tale\Iterator\CallbackMapIterator;
 use Tale\Iterator\FlipIterator;
@@ -75,10 +73,24 @@ abstract class AbstractCollection implements CollectionInterface
         if (!is_subclass_of($iteratorClassName, \IteratorIterator::class, true)) {
             throw new \InvalidArgumentException('Passed class name is not a valid IteratorIterator class');
         }
-        return new Collection($iteratorClassName(
-            $this->getIterable(),
+        return new Collection(new $iteratorClassName(
+            $this->getIterator(),
             ...$args
         ));
+    }
+
+    public function join(string $delimiter = ',', string $keyDelimiter = null): string
+    {
+        $iterable = $this->getIterable();
+        $values = $iterable instanceof \Traversable
+            ? iterator_to_array($iterable)
+            : (array)$iterable;
+        if ($keyDelimiter !== null) {
+            foreach ($values as $key => $value) {
+                $values[$key] = "{$key}{$keyDelimiter}{$value}";
+            }
+        }
+        return implode($delimiter, $values);
     }
 
     public function toArray(): array
@@ -87,21 +99,6 @@ abstract class AbstractCollection implements CollectionInterface
         return $iterable instanceof \Traversable
             ? iterator_to_array($iterable)
             : (array)$iterable;
-    }
-
-    public function toCollection(): CollectionInterface
-    {
-        return new Collection($this->getIterable());
-    }
-
-    public function toMap(): MapInterface
-    {
-        return new Map($this->getEntries());
-    }
-
-    public function toSet(): SetInterface
-    {
-        return new Set($this->getValues());
     }
 
     public function __toString(): string
