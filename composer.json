@@ -1,7 +1,7 @@
 {
     "name": "talesoft/tale-collection",
     "type": "library",
-    "keywords": [""],
+    "keywords": ["collection"],
     "description": "",
     "license": "MIT",
     "homepage": "http://docs.talesoft.codes/php/tale/collection",
