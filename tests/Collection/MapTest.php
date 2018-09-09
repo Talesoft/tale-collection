@@ -52,7 +52,8 @@ class MapTest extends TestCase
      */
     public function testGetValues(): void
     {
-        $map = map([['test', 'a'], [6, 'b'], [['test', 5], 'c'], [new class {}, 'd']]);
+        $map = map([['test', 'a'], [6, 'b'], [['test', 5], 'c'], [new class {
+        }, 'd']]);
         self::assertSame(['a', 'b', 'c', 'd'], $map->getValues()->toArray());
     }
 
@@ -69,7 +70,8 @@ class MapTest extends TestCase
      */
     public function testGetEntries(): void
     {
-        $obj = new class {};
+        $obj = new class {
+        };
         $map = map([['test', 'a'], [['test', 5], 'b'], [$obj, 'c'], ['abc', 'd']]);
         self::assertSame([['test', 'a'], [['test', 5], 'b'], [$obj, 'c'], ['abc', 'd']], $map->getEntries()->toArray());
     }
@@ -82,7 +84,8 @@ class MapTest extends TestCase
      */
     public function testHas(): void
     {
-        $obj = new class {};
+        $obj = new class {
+        };
         $map = map([['a', 1], [$obj, 2], ['c', 3]]);
         self::assertTrue($map->has('a'));
         self::assertTrue($map->has($obj));
@@ -98,7 +101,8 @@ class MapTest extends TestCase
      */
     public function testOffsetGet(): void
     {
-        $obj = new class {};
+        $obj = new class {
+        };
         $map = map([['a', 1], [$obj, 2], ['c', 3]]);
         self::assertSame(1, $map->get('a'));
         self::assertSame(2, $map->get($obj));
@@ -114,7 +118,8 @@ class MapTest extends TestCase
      */
     public function testOffsetGetThrowsExceptionOnInvalidOffset(): void
     {
-        $obj = new class {};
+        $obj = new class {
+        };
         $map = map([['a', 1], [$obj, 2], ['c', 3]]);
         self::assertSame(1, $map->get('d'));
     }
@@ -129,7 +134,8 @@ class MapTest extends TestCase
      */
     public function testOffsetSet(): void
     {
-        $obj = new class {};
+        $obj = new class {
+        };
         $map = map([['a', 1], [$obj, 2], ['c', 3]]);
         $map->set($obj, 5);
         $map->set('d', 10);
@@ -147,7 +153,8 @@ class MapTest extends TestCase
      */
     public function testOffsetUnset(): void
     {
-        $obj = new class {};
+        $obj = new class {
+        };
         $map = map([['a', 1], [$obj, 2], ['c', 3]]);
         $map->remove($obj);
         $map->remove('d'); //Shouldn't do anything
@@ -162,7 +169,8 @@ class MapTest extends TestCase
      */
     public function testCount(): void
     {
-        $obj = new class {};
+        $obj = new class {
+        };
         $map = map([['a', 1], [$obj, 2], ['c', 3]]);
         self::assertSame(3, $map->count());
         $map = map($this->generate([['a', 1], [$obj, 2], ['c', 3]]));
@@ -225,7 +233,7 @@ class MapTest extends TestCase
     {
         $filteredValues = map(
             [[0, 0], [1, 1], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6], [7, 7], [8, 8], [9, 9], [10, 10]]
-        )->filter(function (array $entry){
+        )->filter(function (array $entry) {
             [$key, $value] = $entry;
             return $key !== 3 && $value !== 8;
         });

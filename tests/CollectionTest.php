@@ -6,6 +6,7 @@ namespace Tale\Collection;
 use function Tale\collection;
 use PHPUnit\Framework\TestCase;
 use Tale\Iterator\CallbackMapIterator;
+
 /**
  * @coversDefaultClass \Tale\Collection
  */
@@ -182,7 +183,7 @@ class CollectionTest extends TestCase
      */
     public function testMap(): void
     {
-        $mappedValues = collection([6, 5, 4, 3, 2])->map(function (int $value, int $key){
+        $mappedValues = collection([6, 5, 4, 3, 2])->map(function (int $value, int $key) {
             return $value * $key;
         });
         self::assertSame([0, 5, 8, 9, 8], $mappedValues->toArray());
@@ -202,7 +203,7 @@ class CollectionTest extends TestCase
      */
     public function testFilter(): void
     {
-        $filteredValues = collection(range(0, 10))->filter(function (int $value, int $key){
+        $filteredValues = collection(range(0, 10))->filter(function (int $value, int $key) {
             return $key !== 3 && $value !== 8;
         });
         self::assertSame([0, 1, 2, 4 => 4, 5, 6, 7, 9 => 9, 10], $filteredValues->toArray());
