@@ -73,7 +73,7 @@ class Map extends AbstractCollection implements MapInterface
     {
         $index = \array_search($offset, $this->keys, true);
         if ($index === false) {
-            throw new \OutOfBoundsException('The key doesn\'t exist in this map');
+            throw new \OutOfRangeException('The key doesn\'t exist in this map');
         }
         return $this->values[$index];
     }
@@ -105,14 +105,17 @@ class Map extends AbstractCollection implements MapInterface
 
     public function sort(callable $comparator = null): void
     {
-        $sortedValues = $this->values;
-        uasort($sortedValues, $comparator ?? 'strcmp');
-        $sortedKeys = [];
-        foreach ($sortedValues as $i => $value) {
-            $sortedKeys[] = $this->keys[$i];
+        $entries = $this->toArray();
+        usort($entries, $comparator ?? function (array $entryA, array $entryB) {
+            return $entryA[1] <=> $entryB[1];
+        });
+        $this->keys = [];
+        $this->values = [];
+        foreach ($entries as $entry) {
+            [$key, $value] = $entry;
+            $this->keys[] = $key;
+            $this->values[] = $value;
         }
-        $this->keys = $sortedKeys;
-        $this->values = array_values($sortedValues);
     }
 
     public function join(string $delimiter = ',', string $keyDelimiter = null): string

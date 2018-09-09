@@ -184,7 +184,40 @@ to an actual array, only when retrieving the end-result. Duplicate
 keys are no problem during iteration and will always stay available
 until the iterable gets casted to an array internally.
 
+If you're not much into iterators yet, I've prepared a little comparison
+that explains their advantage in detail.
+
+Check out [Iterators vs Arrays](https://github.com/Talesoft/tale-collection/blob/master/docs/iterators-vs-arrays.md)!
+
+Specialized collections
+-----------------------
+
+All of the following collections use the same iterator mechanisms
+as the collection class discussed above. In fact,
+there is the `Tale\CollectionInterface` they all implement and all of
+them use a common base class `Tale\AbstractCollection` that defines
+most of their APIs.
+
 ### Set
+
+The Set class is an abstraction for a set of values where keys
+don't matter. The keys of a set will be managed and always stay 
+sequential.
+
+The values will be unique. If a value already exists in the set, 
+it won't be added again when using `add`.
+
+The content is managed via the following API:
+
+##### Set->has($item)
+Checks if the set contains a specific item
+
+##### Set->add($item)
+Adds a new item to the set
+
+##### Set->remove($item)
+Removes an item from the set
+
 ```php
 use function Tale\set;
 
@@ -204,7 +237,50 @@ array(3) {
 */
 ```
 
+#### Common use-cases
+
+**A set of CSS classes on elements**
+```php
+use function Tale\set;
+
+$classList = set(['btn']);
+
+if ($primary) {
+    $classList->add('btn-primary');
+}
+
+if ($block) {
+    $classList->add('btn-block');
+}
+
+if ($classList->has('primary') {
+    echo "This is a primary button!\n";
+}
+
+echo "<button class=\"{$classList->join(' ')}\">My button!</button>";
+
+```
+
 ### Map
+
+The map is a data structure that allows using keys other than 
+strings and integers. Through limitations of the PHP engine, 
+you can't access complex keys via array access (`[$obj]`).
+
+The following API manages a map:
+
+##### Map->get($key)
+Retrieves the value for a specific key
+
+##### Map->set($key, $value)
+Sets the value for a specific key
+
+##### Map->has($key)
+Checks whether a specific key exists or not
+
+##### Map->remove($key)
+Removes a value with a specific key from the map
+
 ```php
 use function Tale\map;
 
@@ -215,14 +291,49 @@ $map = map();
 $map->set($key1, 'value 1');
 $map->set($key2, 'value 2');
     
-var_dump($set->toArray());
+var_dump($map->toArray());
 /*
 array(3) {
-  0 => object(SomeOtherClass)#1 (0) {}
-  1 => object(SomeClass)#2 (0) {}
+  0 => array(2) {
+    0 => object(SomeOtherClass)#1 (0) {}
+    1 => string(7) "value 1"
+  }
+  1 => array(2) {
+    0 => object(SomeClass)#2 (0) {}
+    1 => string(7) "value 2"
+  }
 }
 */
 ```
 
+#### Common use-cases
+
+**A metadata storage for objects**
+```php
+use function Tale\map;
+
+$metadata = map();
+
+$b = new B();
+
+$objects = [
+    new A(),
+    $b,
+    new C(),
+    new D()
+];
+
+foreach ($objects as $obj) {
+    $metadata->set($obj, getMetadataForObject($obj));
+}
+
+//[...]
+
+if ($metadata->has($b)) {
+    $bMetadata = $metadata->get($b);
+    
+    //$bMetadata is now the metadata for the $b instance
+}
+```
 
 TODO: More docs.

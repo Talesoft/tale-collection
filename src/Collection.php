@@ -28,6 +28,9 @@ class Collection extends AbstractCollection
     public function offsetGet($offset)
     {
         $this->ensureArray();
+        if (!isset($this->iterable[$offset])) {
+            throw new \OutOfRangeException("The key {$offset} doesn't exist in this collection");
+        }
         return $this->iterable[$offset];
     }
 
@@ -36,6 +39,7 @@ class Collection extends AbstractCollection
         $this->ensureArray();
         if ($offset === null) {
             $this->iterable[] = $value;
+            return;
         }
         $this->iterable[$offset] = $value;
     }

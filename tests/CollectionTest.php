@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace Tale\Collection;
 
+use function Tale\collection;
 use PHPUnit\Framework\TestCase;
 use Tale\Iterator\CallbackMapIterator;
-use function Tale\collection;
-
 /**
  * @coversDefaultClass \Tale\Collection
  */
@@ -17,6 +16,10 @@ class CollectionTest extends TestCase
      * @covers ::getKeys
      * @covers ::chain
      * @covers ::toArray
+     * @covers ::getIterable
+     * @covers \Tale\AbstractCollection::getKeys
+     * @covers \Tale\AbstractCollection::getIterator
+     * @covers \Tale\AbstractCollection::chain
      */
     public function testGetKeys(): void
     {
@@ -29,6 +32,10 @@ class CollectionTest extends TestCase
      * @covers ::getValues
      * @covers ::chain
      * @covers ::toArray
+     * @covers ::getIterable
+     * @covers \Tale\AbstractCollection::getValues
+     * @covers \Tale\AbstractCollection::getIterator
+     * @covers \Tale\AbstractCollection::chain
      */
     public function testGetValues(): void
     {
@@ -41,6 +48,10 @@ class CollectionTest extends TestCase
      * @covers ::getEntries
      * @covers ::chain
      * @covers ::toArray
+     * @covers ::getIterable
+     * @covers \Tale\AbstractCollection::getEntries
+     * @covers \Tale\AbstractCollection::getIterator
+     * @covers \Tale\AbstractCollection::chain
      */
     public function testGetEntries(): void
     {
@@ -50,7 +61,94 @@ class CollectionTest extends TestCase
 
     /**
      * @covers ::__construct
+     * @covers ::offsetExists
+     * @covers ::ensureArray
+     */
+    public function testOffsetExists(): void
+    {
+        $collection = collection(['a' => 1, 'b' => 2, 'c' => 3]);
+        self::assertTrue($collection->offsetExists('a'));
+        self::assertTrue($collection->offsetExists('b'));
+        self::assertTrue($collection->offsetExists('c'));
+        self::assertFalse($collection->offsetExists('d'));
+    }
+
+    /**
+     * @covers ::__construct
+     * @covers ::offsetGet
+     */
+    public function testOffsetGet(): void
+    {
+        $collection = collection(['a' => 1, 'b' => 2, 'c' => 3]);
+        self::assertSame(1, $collection->offsetGet('a'));
+        self::assertSame(2, $collection->offsetGet('b'));
+        self::assertSame(3, $collection->offsetGet('c'));
+    }
+
+    /**
+     * @covers ::__construct
+     * @covers ::offsetGet
+     * @covers ::ensureArray
+     * @expectedException \OutOfRangeException
+     */
+    public function testOffsetGetThrowsExceptionOnInvalidOffset(): void
+    {
+        $collection = collection(['a' => 1, 'b' => 2, 'c' => 3]);
+        self::assertSame(1, $collection->offsetGet('d'));
+    }
+
+    /**
+     * @covers ::__construct
+     * @covers ::offsetSet
+     * @covers ::offsetGet
+     * @covers ::ensureArray
+     */
+    public function testOffsetSet(): void
+    {
+        $collection = collection(['a' => 1, 'b' => 2, 'c' => 3]);
+        $collection->offsetSet('b', 5);
+        $collection->offsetSet('d', 10);
+        $collection->offsetSet(null, 15);
+        self::assertSame(5, $collection->offsetGet('b'));
+        self::assertSame(10, $collection->offsetGet('d'));
+        self::assertSame(15, $collection->offsetGet(0));
+    }
+
+    /**
+     * @covers ::__construct
+     * @covers ::offsetUnset
+     * @covers ::ensureArray
+     */
+    public function testOffsetUnset(): void
+    {
+        $collection = collection(['a' => 1, 'b' => 2, 'c' => 3]);
+        $collection->offsetUnset('b');
+        $collection->offsetUnset('d'); //Shouldn't do anything
+        self::assertFalse($collection->offsetExists('b'));
+        self::assertFalse($collection->offsetExists('d'));
+    }
+
+    /**
+     * @covers ::__construct
+     * @covers ::count
+     * @covers ::ensureArray
+     */
+    public function testCount(): void
+    {
+        $collection = collection(['a' => 1, 'b' => 2, 'c' => 3]);
+        self::assertSame(3, $collection->count());
+        $collection = collection($this->generate(['a' => 1, 'b' => 2, 'c' => 3]));
+        self::assertSame(3, $collection->count());
+        $collection->offsetSet(null, 'test');
+        self::assertSame(4, $collection->count());
+    }
+
+    /**
+     * @covers ::__construct
      * @covers ::forEach
+     * @covers ::getIterable
+     * @covers \Tale\AbstractCollection::forEach
+     * @covers \Tale\AbstractCollection::getIterator
      */
     public function testForEach(): void
     {
@@ -66,6 +164,10 @@ class CollectionTest extends TestCase
      * @covers ::map
      * @covers ::chain
      * @covers ::toArray
+     * @covers ::getIterable
+     * @covers \Tale\AbstractCollection::map
+     * @covers \Tale\AbstractCollection::getIterator
+     * @covers \Tale\AbstractCollection::chain
      */
     public function testMap(): void
     {
@@ -81,6 +183,10 @@ class CollectionTest extends TestCase
      * @covers ::getValues
      * @covers ::chain
      * @covers ::toArray
+     * @covers ::getIterable
+     * @covers \Tale\AbstractCollection::filter
+     * @covers \Tale\AbstractCollection::getIterator
+     * @covers \Tale\AbstractCollection::chain
      */
     public function testFilter(): void
     {
@@ -95,6 +201,10 @@ class CollectionTest extends TestCase
      * @covers ::__construct
      * @covers ::reduce
      * @covers ::toArray
+     * @covers ::getIterable
+     * @covers \Tale\AbstractCollection::reduce
+     * @covers \Tale\AbstractCollection::getIterator
+     * @covers \Tale\AbstractCollection::chain
      */
     public function testReduce(): void
     {
@@ -130,8 +240,51 @@ class CollectionTest extends TestCase
 
     /**
      * @covers ::__construct
+     * @covers ::serialize
+     * @covers ::ensureArray
+     */
+    public function testSerialize(): void
+    {
+        $collection = collection(['a' => 1, 'b' => 2, 'c' => 3]);
+        self::assertSame('a:3:{s:1:"a";i:1;s:1:"b";i:2;s:1:"c";i:3;}', $collection->serialize());
+        $collection = collection($this->generate(['a' => 1, 'b' => 2, 'c' => 3]));
+        self::assertSame('a:3:{s:1:"a";i:1;s:1:"b";i:2;s:1:"c";i:3;}', $collection->serialize());
+    }
+
+    /**
+     * @covers ::__construct
+     * @covers ::unserialize
+     * @covers ::ensureArray
+     */
+    public function testUnserialize(): void
+    {
+        $collection = collection();
+        $collection->unserialize('a:3:{s:1:"a";i:1;s:1:"b";i:2;s:1:"c";i:3;}');
+        self::assertSame(['a' => 1, 'b' => 2, 'c' => 3], $collection->toArray());
+    }
+
+    /**
+     * @covers ::__construct
+     * @covers ::jsonSerialize
+     * @covers ::ensureArray
+     */
+    public function testJsonSerialize(): void
+    {
+        $collection = collection(['a' => 1, 'b' => 2, 'c' => 3]);
+        self::assertSame(['a' => 1, 'b' => 2, 'c' => 3], $collection->jsonSerialize());
+        $collection = collection($this->generate(['a' => 1, 'b' => 2, 'c' => 3]));
+        self::assertSame(['a' => 1, 'b' => 2, 'c' => 3], $collection->jsonSerialize());
+    }
+
+    /**
+     * @covers ::__construct
      * @covers ::flip
+     * @covers ::chain
      * @covers ::toArray
+     * @covers ::getIterable
+     * @covers \Tale\AbstractCollection::flip
+     * @covers \Tale\AbstractCollection::getIterator
+     * @covers \Tale\AbstractCollection::chain
      */
     public function testFlip(): void
     {
@@ -156,6 +309,7 @@ class CollectionTest extends TestCase
      * @covers ::join
      * @covers ::toArray
      * @covers ::__toString
+     * @covers \Tale\AbstractCollection::join
      */
     public function testJoin(): void
     {
@@ -164,12 +318,17 @@ class CollectionTest extends TestCase
         self::assertSame('a,b,c,d', (string)$collection);
         self::assertSame('a:b:c:d', $collection->join(':'));
         self::assertSame('0;a:1;b:2;c:3;d', $collection->join(':', ';'));
+
+        $collection = collection($this->generate(range('a', 'd')));
+        self::assertSame('a,b,c,d', $collection->join());
     }
 
     /**
      * @covers ::__construct
      * @covers ::chain
      * @covers ::toArray
+     * @covers \Tale\AbstractCollection::getIterator
+     * @covers \Tale\AbstractCollection::chain
      */
     public function testChain(): void
     {
@@ -184,18 +343,29 @@ class CollectionTest extends TestCase
 
     /**
      * @covers ::__construct
+     * @covers ::chain
+     * @covers ::toArray
+     * @covers \Tale\AbstractCollection::getIterator
+     * @covers \Tale\AbstractCollection::chain
+     * @expectedException \InvalidArgumentException
+     */
+    public function testChainThrowsExceptionOnInvalidIterator(): void
+    {
+        collection(range('a', 'z'))->chain(\stdClass::class, '/^[a-f]$/');
+    }
+
+    /**
+     * @covers ::__construct
      * @covers ::toArray
      */
     public function testToArray(): void
     {
         $collection = collection(range('a', 'd'));
         self::assertSame(['a', 'b', 'c', 'd'], $collection->toArray());
-        $values = collection(['a' => 2, 'b' => 2, 'c' => 3])
-            ->flip()
-            ->map(function (string $key) {
-                return strtoupper($key);
-            })
-            ->flip();
-        var_dump($values->toArray());
+    }
+
+    private function generate(array $values): \Generator
+    {
+        yield from $values;
     }
 }

@@ -5,6 +5,7 @@
 /.codeclimate.yml   export-ignore
 /.editorconfig      export-ignore
 /*.md               export-ignore
+/docs/*.md          export-ignore
 
 # Auto detect text files and perform LF normalization
 * text=auto
