@@ -172,7 +172,7 @@ VALUES
 #### How?
 
 The value of each iteration step (`$value`) through PHP will be retrieved
-by calling `current()` on `$iterator`. With out implementation, we made
+by calling `current()` on `$iterator`. With our implementation, we made
 the outer iterator (`StrtoupperIterator`) call `strtoupper` on all values
 yielded by the inner iterator (Generator instance of `generate()`).
 
@@ -236,7 +236,8 @@ $iterator = new ArrayIterator(['hello', 'we', 'are', 'values']);
 $uppercaseIterator = new StrtoupperIterator($iterator);
 ```
 
-Luckily, the `ArrayIterator` will only create a single array copy in its constructor.
+Luckily, the `ArrayIterator` will only create a single array copy in its constructor that will be
+optimized away by the PHP engine.
 Iteration after that works without value copying.
 
 Iterating `$uppercaseIterator` would look like this:
@@ -278,7 +279,7 @@ class AreFilterIterator extends \IteratorIterator
 
 This iterator would automatically skip all values that are exactly the string `"are"`.
 
-It doesn't need to know and next or previous values for that, just the current value
+It doesn't need to know the next or previous values for that, just the current value
 and the instruction to skip it with `next()` when we want it. No array copies required.
 
 Let's run it:
@@ -420,7 +421,7 @@ Wow, this looks like a lot of array operations and probably a lot of array
 copies all over, right? **Wrong!**
 
 
-You might thing, memory-wise, the above is similar to this:
+You might think, memory-wise, the above is similar to this:
 
 ```php
 $values = ['hello', 'we', 'are', 'values'];

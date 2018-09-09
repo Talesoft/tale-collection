@@ -13,6 +13,7 @@ use function Tale\map;
 class MapTest extends TestCase
 {
     /**
+     * @covers \Tale\map
      * @covers ::__construct
      * @expectedException \InvalidArgumentException
      */
@@ -20,7 +21,9 @@ class MapTest extends TestCase
     {
         $map = map([1, 2]);
     }
+
     /**
+     * @covers \Tale\map
      * @covers ::__construct
      * @covers ::getKeys
      * @covers ::chain
@@ -37,6 +40,7 @@ class MapTest extends TestCase
     }
 
     /**
+     * @covers \Tale\map
      * @covers ::__construct
      * @covers ::getValues
      * @covers ::chain
@@ -53,6 +57,7 @@ class MapTest extends TestCase
     }
 
     /**
+     * @covers \Tale\map
      * @covers ::__construct
      * @covers ::getEntries
      * @covers ::chain
@@ -70,6 +75,7 @@ class MapTest extends TestCase
     }
 
     /**
+     * @covers \Tale\map
      * @covers ::__construct
      * @covers ::has
      * @covers ::offsetExists
@@ -85,6 +91,7 @@ class MapTest extends TestCase
     }
 
     /**
+     * @covers \Tale\map
      * @covers ::__construct
      * @covers ::get
      * @covers ::offsetGet
@@ -99,6 +106,7 @@ class MapTest extends TestCase
     }
 
     /**
+     * @covers \Tale\map
      * @covers ::__construct
      * @covers ::get
      * @covers ::offsetGet
@@ -112,6 +120,7 @@ class MapTest extends TestCase
     }
 
     /**
+     * @covers \Tale\map
      * @covers ::__construct
      * @covers ::set
      * @covers ::get
@@ -131,6 +140,7 @@ class MapTest extends TestCase
     }
 
     /**
+     * @covers \Tale\map
      * @covers ::__construct
      * @covers ::remove
      * @covers ::offsetUnset
@@ -146,6 +156,7 @@ class MapTest extends TestCase
     }
 
     /**
+     * @covers \Tale\map
      * @covers ::__construct
      * @covers ::count
      */
@@ -161,6 +172,7 @@ class MapTest extends TestCase
     }
 
     /**
+     * @covers \Tale\map
      * @covers ::__construct
      * @covers ::forEach
      * @covers ::getIterable
@@ -178,6 +190,7 @@ class MapTest extends TestCase
     }
 
     /**
+     * @covers \Tale\map
      * @covers ::__construct
      * @covers ::map
      * @covers ::chain
@@ -197,6 +210,7 @@ class MapTest extends TestCase
     }
 
     /**
+     * @covers \Tale\map
      * @covers ::__construct
      * @covers ::filter
      * @covers ::getValues
@@ -222,6 +236,7 @@ class MapTest extends TestCase
     }
 
     /**
+     * @covers \Tale\map
      * @covers ::__construct
      * @covers ::reduce
      * @covers ::toArray
@@ -242,6 +257,7 @@ class MapTest extends TestCase
     }
 
     /**
+     * @covers \Tale\map
      * @covers ::__construct
      * @covers ::sort
      * @covers ::toArray
@@ -259,6 +275,7 @@ class MapTest extends TestCase
     }
 
     /**
+     * @covers \Tale\map
      * @covers ::__construct
      * @covers ::serialize
      */
@@ -272,6 +289,7 @@ class MapTest extends TestCase
     }
 
     /**
+     * @covers \Tale\map
      * @covers ::__construct
      * @covers ::unserialize
      */
@@ -283,6 +301,7 @@ class MapTest extends TestCase
     }
 
     /**
+     * @covers \Tale\map
      * @covers ::__construct
      * @covers ::jsonSerialize
      */
@@ -293,6 +312,7 @@ class MapTest extends TestCase
     }
 
     /**
+     * @covers \Tale\map
      * @covers ::__construct
      * @covers ::flip
      * @covers ::chain
@@ -314,6 +334,7 @@ class MapTest extends TestCase
     }
 
     /**
+     * @covers \Tale\map
      * @covers ::__construct
      * @covers ::join
      * @covers ::toArray
@@ -333,6 +354,7 @@ class MapTest extends TestCase
     }
 
     /**
+     * @covers \Tale\map
      * @covers ::__construct
      * @covers ::chain
      * @covers ::toArray
@@ -350,6 +372,7 @@ class MapTest extends TestCase
     }
 
     /**
+     * @covers \Tale\map
      * @covers ::__construct
      * @covers ::toArray
      */

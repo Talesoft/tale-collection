@@ -12,6 +12,7 @@ use Tale\Iterator\CallbackMapIterator;
 class CollectionTest extends TestCase
 {
     /**
+     * @covers \Tale\collection
      * @covers ::__construct
      * @covers ::getKeys
      * @covers ::chain
@@ -28,6 +29,7 @@ class CollectionTest extends TestCase
     }
 
     /**
+     * @covers \Tale\collection
      * @covers ::__construct
      * @covers ::getValues
      * @covers ::chain
@@ -44,6 +46,7 @@ class CollectionTest extends TestCase
     }
 
     /**
+     * @covers \Tale\collection
      * @covers ::__construct
      * @covers ::getEntries
      * @covers ::chain
@@ -60,6 +63,7 @@ class CollectionTest extends TestCase
     }
 
     /**
+     * @covers \Tale\collection
      * @covers ::__construct
      * @covers ::offsetExists
      * @covers ::ensureArray
@@ -74,6 +78,7 @@ class CollectionTest extends TestCase
     }
 
     /**
+     * @covers \Tale\collection
      * @covers ::__construct
      * @covers ::offsetGet
      */
@@ -86,6 +91,7 @@ class CollectionTest extends TestCase
     }
 
     /**
+     * @covers \Tale\collection
      * @covers ::__construct
      * @covers ::offsetGet
      * @covers ::ensureArray
@@ -98,6 +104,7 @@ class CollectionTest extends TestCase
     }
 
     /**
+     * @covers \Tale\collection
      * @covers ::__construct
      * @covers ::offsetSet
      * @covers ::offsetGet
@@ -115,6 +122,7 @@ class CollectionTest extends TestCase
     }
 
     /**
+     * @covers \Tale\collection
      * @covers ::__construct
      * @covers ::offsetUnset
      * @covers ::ensureArray
@@ -129,6 +137,7 @@ class CollectionTest extends TestCase
     }
 
     /**
+     * @covers \Tale\collection
      * @covers ::__construct
      * @covers ::count
      * @covers ::ensureArray
@@ -144,6 +153,7 @@ class CollectionTest extends TestCase
     }
 
     /**
+     * @covers \Tale\collection
      * @covers ::__construct
      * @covers ::forEach
      * @covers ::getIterable
@@ -160,6 +170,7 @@ class CollectionTest extends TestCase
     }
 
     /**
+     * @covers \Tale\collection
      * @covers ::__construct
      * @covers ::map
      * @covers ::chain
@@ -178,6 +189,7 @@ class CollectionTest extends TestCase
     }
 
     /**
+     * @covers \Tale\collection
      * @covers ::__construct
      * @covers ::filter
      * @covers ::getValues
@@ -198,6 +210,7 @@ class CollectionTest extends TestCase
     }
 
     /**
+     * @covers \Tale\collection
      * @covers ::__construct
      * @covers ::reduce
      * @covers ::toArray
@@ -215,6 +228,7 @@ class CollectionTest extends TestCase
     }
 
     /**
+     * @covers \Tale\collection
      * @covers ::__construct
      * @covers ::sort
      * @covers ::toArray
@@ -239,6 +253,7 @@ class CollectionTest extends TestCase
     }
 
     /**
+     * @covers \Tale\collection
      * @covers ::__construct
      * @covers ::serialize
      * @covers ::ensureArray
@@ -252,6 +267,7 @@ class CollectionTest extends TestCase
     }
 
     /**
+     * @covers \Tale\collection
      * @covers ::__construct
      * @covers ::unserialize
      * @covers ::ensureArray
@@ -264,6 +280,7 @@ class CollectionTest extends TestCase
     }
 
     /**
+     * @covers \Tale\collection
      * @covers ::__construct
      * @covers ::jsonSerialize
      * @covers ::ensureArray
@@ -277,6 +294,7 @@ class CollectionTest extends TestCase
     }
 
     /**
+     * @covers \Tale\collection
      * @covers ::__construct
      * @covers ::flip
      * @covers ::chain
@@ -305,6 +323,7 @@ class CollectionTest extends TestCase
     }
 
     /**
+     * @covers \Tale\collection
      * @covers ::__construct
      * @covers ::join
      * @covers ::toArray
@@ -324,6 +343,7 @@ class CollectionTest extends TestCase
     }
 
     /**
+     * @covers \Tale\collection
      * @covers ::__construct
      * @covers ::chain
      * @covers ::toArray
@@ -342,6 +362,7 @@ class CollectionTest extends TestCase
     }
 
     /**
+     * @covers \Tale\collection
      * @covers ::__construct
      * @covers ::chain
      * @covers ::toArray
@@ -355,6 +376,7 @@ class CollectionTest extends TestCase
     }
 
     /**
+     * @covers \Tale\collection
      * @covers ::__construct
      * @covers ::toArray
      */

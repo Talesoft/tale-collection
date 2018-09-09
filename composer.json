@@ -23,6 +23,7 @@
         "files": ["src/functions.php"]
     },
     "require-dev": {
-        "talesoft/tale-dev-tool": "^0.2.5"
+        "talesoft/tale-dev-tool": "^0.2.5",
+        "phpbench/phpbench": "@dev"
     }
 }

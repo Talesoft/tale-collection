@@ -7,7 +7,9 @@ use Tale\AbstractCollection;
 
 class Set extends AbstractCollection implements SetInterface
 {
-    use SequenceTrait;
+    use SequenceTrait {
+        offsetSet as private sequenceOffsetSet;
+    }
 
     public function __construct(iterable $iterable = [])
     {
@@ -21,10 +23,15 @@ class Set extends AbstractCollection implements SetInterface
 
     public function add($item): void
     {
-        if ($this->has($item)) {
+        $this->offsetSet(null, $item);
+    }
+
+    public function offsetSet($offset, $value): void
+    {
+        if ($this->has($value)) {
             return;
         }
-        $this->offsetSet(null, $item);
+        $this->sequenceOffsetSet($offset, $value);
     }
 
     public function remove($item): void

@@ -21,6 +21,9 @@ class Stack extends AbstractCollection implements StackInterface
 
     public function pop()
     {
+        if ($this->count() < 1) {
+            throw new \OutOfRangeException('Failed to pop stack: No items left');
+        }
         return array_pop($this->items);
     }
 
@@ -31,6 +34,9 @@ class Stack extends AbstractCollection implements StackInterface
 
     public function shift()
     {
+        if ($this->count() < 1) {
+            throw new \OutOfRangeException('Failed to shift stack: No items left');
+        }
         return array_shift($this->items);
     }
 }

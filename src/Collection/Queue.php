@@ -13,6 +13,9 @@ class Queue extends AbstractCollection implements QueueInterface
 
     public function __construct(iterable $iterable = [], int $direction = self::DIRECTION_LIFO)
     {
+        if ($direction > self::DIRECTION_FILO) {
+            throw new \InvalidArgumentException('Passed direction is not a valid queue direction');
+        }
         $this->setIterable($iterable);
         $this->direction = $direction;
     }
@@ -27,31 +30,24 @@ class Queue extends AbstractCollection implements QueueInterface
 
     public function enqueue($item): void
     {
-        switch ($this->direction) {
-            case self::DIRECTION_LIFO:
-            case self::DIRECTION_LILO:
-                $this->offsetSet(null, $item);
-                break;
-            case self::DIRECTION_FILO:
-            case self::DIRECTION_FIFO:
-                array_unshift($this->items, $item);
-                break;
+        if ($this->direction === self::DIRECTION_LIFO || $this->direction === self::DIRECTION_LILO) {
+            $this->offsetSet(null, $item);
+            return;
         }
 
-        throw new \RuntimeException('Failed to enqueue: Unknown direction');
+        array_unshift($this->items, $item);
     }
 
     public function dequeue()
     {
-        switch ($this->direction) {
-            case self::DIRECTION_FILO:
-            case self::DIRECTION_LILO:
-                return array_pop($this->items);
-            case self::DIRECTION_LIFO:
-            case self::DIRECTION_FIFO:
-                return array_shift($this->items);
+        if ($this->count() < 1) {
+            throw new \OutOfRangeException('Failed to dequeue: No items in queue');
         }
 
-        throw new \RuntimeException('Failed to dequeue: Unknown direction');
+        if ($this->direction === self::DIRECTION_FILO || $this->direction === self::DIRECTION_LILO) {
+            return array_pop($this->items);
+        }
+
+        return array_shift($this->items);
     }
 }

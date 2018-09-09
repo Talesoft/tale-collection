@@ -23,9 +23,9 @@ function map(iterable $iterable = []): MapInterface
     return new Map($iterable);
 }
 
-function queue(iterable $iterable = []): QueueInterface
+function queue(iterable $iterable = [], int $direction = QueueInterface::DIRECTION_LIFO): QueueInterface
 {
-    return new Queue($iterable);
+    return new Queue($iterable, $direction);
 }
 
 function sequence(iterable $iterable = []): Sequence

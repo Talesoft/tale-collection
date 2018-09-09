@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Tale;
 
-use Tale\Collection\Iterator\EntryIterator;
+use Tale\Collection\Iterator\EntryComposeIterator;
 use Tale\Iterator\CallbackFilterIterator;
 use Tale\Iterator\CallbackMapIterator;
 use Tale\Iterator\FlipIterator;
@@ -27,7 +27,7 @@ abstract class AbstractCollection implements CollectionInterface
 
     public function getEntries(): CollectionInterface
     {
-        return $this->chain(EntryIterator::class);
+        return $this->chain(EntryComposeIterator::class);
     }
 
     public function getIterator()

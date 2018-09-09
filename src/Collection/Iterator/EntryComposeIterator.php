@@ -5,7 +5,7 @@ namespace Tale\Collection\Iterator;
 
 use Tale\Iterator\IndexIterator;
 
-class EntryIterator extends IndexIterator
+class EntryComposeIterator extends IndexIterator
 {
     public function key()
     {

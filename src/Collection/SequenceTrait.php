@@ -33,14 +33,18 @@ trait SequenceTrait
     public function offsetGet($offset)
     {
         $this->validateKey($offset);
+        if (!isset($this->items[$offset])) {
+            throw new \OutOfRangeException("The key {$offset} doesn't exist in this collection");
+        }
         return $this->items[$offset];
     }
 
     public function offsetSet($offset, $value): void
     {
-        $this->validateKey($offset);
+        $this->validateKey($offset, true);
         if ($offset === null || !isset($this->items[$offset])) {
             $this->items[] = $value;
+            return;
         }
         $this->items[$offset] = $value;
     }
@@ -84,9 +88,9 @@ trait SequenceTrait
         return $this->items;
     }
 
-    private function validateKey($key): void
+    private function validateKey($key, bool $nullAllowed = false): void
     {
-        if (!\is_int($key)) {
+        if (!\is_int($key) && (!$nullAllowed || $key !== null)) {
             throw new \InvalidArgumentException('Sequential collections only support integer keys');
         }
     }
