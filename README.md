@@ -184,11 +184,6 @@ to an actual array, only when retrieving the end-result. Duplicate
 keys are no problem during iteration and will always stay available
 until the iterable gets casted to an array internally.
 
-If you're not much into iterators yet, I've prepared a little comparison
-that explains their advantage in detail.
-
-Check out [Iterators vs Arrays](https://github.com/Talesoft/tale-collection/blob/master/docs/iterators-vs-arrays.md)!
-
 Specialized collections
 -----------------------
 
